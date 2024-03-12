@@ -17,6 +17,7 @@ public:
     unique_ptr (T *_ptr)
     {
         this->_ptr = _ptr;
+        _ptr = nullptr;
         std::cout << "Constructor worked!" << '\n';
     }
     
@@ -25,13 +26,19 @@ public:
         return *_ptr;
     }
     
+    T& operator*()
+    {
+        return *_ptr;
+    }
+    
     unique_ptr(const unique_ptr&) = delete;
     unique_ptr& operator=(const unique_ptr&) = delete;
     
-    unique_ptr<T> release()
+    T* release()
     {
         T* temp = _ptr;
-        return unique_ptr<T>(temp);
+        _ptr = nullptr;
+        return temp;
     }
     
     ~unique_ptr()
